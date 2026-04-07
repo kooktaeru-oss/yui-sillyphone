@@ -3,658 +3,382 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SillyPhone Premium</title>
+    <title>SillyPhone v3 - Ether Shell</title>
     <style>
-        /* ===== 基础与变量 ===== */
-        :root {
-            --phone-width: 330px;
-            --phone-height: 600px;
-            --glass-bg: rgba(20, 20, 25, 0.65);
-            --glass-border: rgba(255, 255, 255, 0.08);
-            --accent-glow: rgba(100, 150, 255, 0.15);
-            --text-main: rgba(255, 255, 255, 0.9);
-            --text-dim: rgba(255, 255, 255, 0.5);
-            --ui-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-        }
-
-        * {
-            box-sizing: border-box;
+        /* ===== 手机外壳：更深更高级版 (来自用户美化文件) ===== */
+        
+        body {
             margin: 0;
             padding: 0;
+            background: transparent;
+            font-family: 'Outfit', 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            color: #fff;
+            overflow: hidden;
         }
 
-        body {
-            background: transparent;
-            font-family: var(--ui-font);
+        /**时间提示**/
+        .sp-time-divider-cv2 {
             display: flex;
             justify-content: center;
-            align-items: center;
-            height: 100vh;
-            overflow: hidden;
+            margin: 10px 0 4px;
+            width: 100%;
         }
 
-        /* ===== 手机外壳 (基于用户美化方案升级) ===== */
-        .phone-shell {
-            width: var(--phone-width);
-            height: var(--phone-height);
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: 42px;
-            position: relative;
-            box-shadow: 
-                0 25px 50px -12px rgba(0, 0, 0, 0.5),
-                inset 0 1px 0 rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            overflow: hidden;
+        .sp-time-divider-text-cv2 {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 999px;
+            font-size: 9px;
+            line-height: 1;
+            color: rgba(255,255,255,0.42);
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.06);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+        }
+
+        /**系统提示**/
+        .sp-system-row-cv2 {
             display: flex;
-            flex-direction: column;
-            animation: fadeIn 0.6s ease-out;
+            justify-content: center;
+            margin: 8px 0;
+            width: 100%;
         }
 
-        .phone-shell::after {
+        .sp-system-pill-cv2 {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            max-width: 82%;
+            padding: 6px 10px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.07);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 3px 10px rgba(0,0,0,0.10), inset 0 1px 0 rgba(255,255,255,0.05);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        .sp-system-text-cv2 {
+            font-size: 10px;
+            line-height: 1.4;
+            color: rgba(255,255,255,0.78);
+            word-break: break-word;
+            text-align: center;
+        }
+
+        /**手机整体**/
+        .sp-phone-wrap-cv2 {
+            width: 320px;
+            height: 550px;
+            margin: 20px auto;
+            padding: 2px;
+            border-radius: 38px;
+            position: relative;
+            overflow: hidden;
+            background: rgba(34, 34, 40, 0.56);
+            border: 1px solid rgba(72, 72, 82, 0.52);
+            box-shadow: 0 22px 44px rgba(0, 0, 0, 0.30), 0 8px 18px rgba(0, 0, 0, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.10), inset 0 -1px 0 rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        .sp-phone-wrap-cv2::after {
             content: "";
             position: absolute;
             inset: 0;
             border-radius: inherit;
             pointer-events: none;
-            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+            box-shadow: inset 0 0 0 0.6px rgba(68, 68, 76, 0.20), inset 0 1px 1px rgba(255, 255, 255, 0.04);
         }
 
-        /* 灵动岛 (Dynamic Island) */
-        .dynamic-island {
+        /* 灵动岛 */
+        .sp-phone-wrap-cv2::before {
+            content: "";
             position: absolute;
-            top: 12px;
+            top: 10px;
             left: 50%;
             transform: translateX(-50%);
-            width: 100px;
-            height: 26px;
-            background: rgba(0, 0, 0, 0.8);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            z-index: 100;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            width: 102px;
+            height: 24px;
+            border-radius: 18px;
+            z-index: 6;
+            pointer-events: none;
+            background: rgba(40, 40, 46, 0.48);
+            border: 1px solid rgba(82, 82, 92, 0.20);
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.06), 0 1px 2px rgba(0,0,0,0.12);
+            backdrop-filter: blur(2px);
+            -webkit-backdrop-filter: blur(2px);
+            transition: all 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
         }
 
-        .dynamic-island.active {
-            width: 180px;
-            height: 34px;
-            background: rgba(10, 10, 15, 0.9);
+        /* 灵动岛状态扩展 */
+        .sp-phone-wrap-cv2.thinking::before {
+            width: 140px;
+            background: rgba(50, 50, 60, 0.8);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.15);
         }
 
-        .dynamic-island-status {
-            font-size: 10px;
-            color: white;
-            opacity: 0;
-            white-space: nowrap;
-            transition: opacity 0.2s;
-        }
-
-        .dynamic-island.active .dynamic-island-status {
-            opacity: 1;
+        /* 屏幕区域 */
+        .sp-phone-screen-cv2 {
+            width: 100%;
+            height: 100%;
+            border-radius: 34px;
+            position: relative;
+            overflow: hidden;
+            background: rgba(72, 72, 80, 0.10);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.06), inset 0 -1px 0 rgba(255,255,255,0.02);
+            backdrop-filter: blur(1.5px);
+            -webkit-backdrop-filter: blur(1.5px);
         }
 
         /* 顶部栏 */
-        .phone-header {
-            height: 60px;
-            padding: 24px 20px 0;
+        .sp-phone-header-cv2 {
+            height: 52px;
+            padding: 18px 18px 0 18px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            z-index: 10;
+            color: rgba(255, 255, 255, 0.88);
+            font-size: 11px;
+            position: relative;
+            z-index: 3;
         }
 
-        .phone-title {
-            font-size: 14px;
+        .sp-phone-title-cv2 {
+            font-size: 13px;
             font-weight: 600;
-            color: var(--text-main);
-            letter-spacing: -0.2px;
+            letter-spacing: 0.2px;
+            color: rgba(255,255,255,0.88);
+            text-shadow: 0 1px 1px rgba(0,0,0,0.12);
         }
 
-        .status-dots {
+        .sp-phone-dots-cv2 {
             display: flex;
-            gap: 4px;
+            gap: 5px;
+            cursor: pointer;
         }
 
-        .status-dots span {
+        .sp-phone-dots-cv2 span {
             width: 4px;
             height: 4px;
-            background: rgba(255, 255, 255, 0.4);
             border-radius: 50%;
-        }
-
-        /* 聊天主体 */
-        .chat-body {
-            flex: 1;
-            padding: 15px 15px 80px;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            scrollbar-width: none;
-        }
-
-        .chat-body::-webkit-scrollbar {
-            display: none;
-        }
-
-        /* ===== 消息气泡 ===== */
-        .msg-row {
-            display: flex;
-            flex-direction: column;
-            width: 100%;
-            animation: slideIn 0.3s ease-out;
-        }
-
-        .msg-container {
-            display: flex;
-            align-items: flex-start;
-            gap: 10px;
-            max-width: 85%;
-        }
-
-        .msg-row.self .msg-container {
-            align-self: flex-end;
-            flex-direction: row-reverse;
-        }
-
-        .avatar {
-            width: 34px;
-            height: 34px;
-            border-radius: 12px;
-            background-size: cover;
-            background-position: center;
-            flex-shrink: 0;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .bubble-wrap {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-
-        .msg-row.self .bubble-wrap {
-            align-items: flex-end;
-        }
-
-        .sender-name {
-            font-size: 11px;
-            font-weight: 500;
-            color: var(--text-dim);
-            margin-left: 2px;
-        }
-
-        .bubble {
-            padding: 10px 14px;
-            border-radius: 18px;
-            font-size: 13.5px;
-            line-height: 1.5;
-            word-break: break-word;
-            position: relative;
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            color: var(--text-main);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        .msg-row.self .bubble {
-            background: rgba(60, 120, 255, 0.25);
-            border-color: rgba(60, 120, 255, 0.2);
-            border-bottom-right-radius: 4px;
-        }
-
-        .msg-row:not(.self) .bubble {
-            border-bottom-left-radius: 4px;
-        }
-
-        .msg-time {
-            font-size: 9px;
-            color: rgba(255, 255, 255, 0.3);
-            margin-top: 2px;
-        }
-
-        /* 系统消息 */
-        .sys-msg {
-            align-self: center;
-            padding: 4px 12px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 20px;
-            font-size: 10px;
-            color: var(--text-dim);
-            margin: 8px 0;
-        }
-
-        /* 时间分割 */
-        .time-divider {
-            align-self: center;
-            font-size: 10px;
-            color: rgba(255, 255, 255, 0.25);
-            margin: 20px 0 10px;
-        }
-
-        /* ===== 特殊内容类型 ===== */
-        .media-content {
-            border-radius: 12px;
-            max-width: 200px;
-            overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .media-img {
-            width: 100%;
+            background: rgba(255,255,255,0.72);
             display: block;
         }
 
-        .voice-bubble {
+        /* 聊天区 */
+        .sp-chat-body-cv2 {
+            height: calc(100% - 52px);
+            padding: 8px 12px 72px 12px;
+            overflow-y: auto;
             display: flex;
-            align-items: center;
-            gap: 8px;
-            min-width: 100px;
+            flex-direction: column;
+            gap: 10px;
+            position: relative;
+            z-index: 2;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
         }
 
-        .voice-icon {
-            opacity: 0.7;
+        .sp-chat-body-cv2::-webkit-scrollbar {
+            width: 0;
+            height: 0;
+            display: none;
         }
 
-        /* ===== 输入区域 ===== */
-        .input-area {
+        /* 假输入框 (实际作为交互入口) */
+        .sp-fake-input-cv2 {
             position: absolute;
-            bottom: 20px;
-            left: 15px;
-            right: 15px;
-            height: 48px;
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 24px;
+            left: 17px;
+            right: 17px;
+            bottom: 10px;
+            height: 34px;
+            border-radius: 20px;
+            z-index: 10;
             display: flex;
             align-items: center;
-            padding: 0 4px 0 15px;
-            backdrop-filter: blur(10px);
-            z-index: 50;
+            gap: 10px;
+            padding: 0 12px;
+            background: rgba(255, 255, 255, 0.07);
+            border: 1px solid rgba(255, 255, 255, 0.10);
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.08), 0 3px 10px rgba(0,0,0,0.08);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            cursor: text;
         }
 
-        #phone-input {
-            flex: 1;
-            background: transparent;
-            border: none;
-            color: white;
-            font-size: 13px;
-            outline: none;
-            padding-right: 10px;
-        }
-
-        #phone-input::placeholder {
-            color: rgba(255, 255, 255, 0.3);
-        }
-
-        .send-btn {
-            width: 40px;
-            height: 40px;
-            background: rgba(255, 255, 255, 0.15);
-            border: none;
-            border-radius: 50%;
-            color: white;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s;
-        }
-
-        .send-btn:hover {
-            background: rgba(60, 120, 255, 0.4);
-            transform: scale(1.05);
-        }
-
-        .send-btn svg {
+        .sp-fake-input-left-cv2 {
             width: 18px;
             height: 18px;
-            fill: currentColor;
-            transform: rotate(-30deg);
+            border-radius: 50%;
+            flex-shrink: 0;
+            position: relative;
+            background: rgba(255,255,255,0.10);
+            border: 1px solid rgba(255,255,255,0.08);
         }
 
-        /* 动画 */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+        .sp-fake-input-left-cv2::before, .sp-fake-input-left-cv2::after {
+            content: "";
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            background: rgba(255,255,255,0.55);
+            transform: translate(-50%, -50%);
+            border-radius: 2px;
+        }
+        .sp-fake-input-left-cv2::before { width: 8px; height: 1.5px; }
+        .sp-fake-input-left-cv2::after { width: 1.5px; height: 8px; }
+
+        .sp-fake-input-text-cv2 {
+            flex: 1;
+            min-width: 0;
+            font-size: 10px;
+            color: rgba(255,255,255,0.42);
+            letter-spacing: 0.2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateX(10px); }
-            to { opacity: 1; transform: translateX(0); }
+        .sp-fake-input-right-cv2 {
+            width: 21px;
+            height: 21px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            position: relative;
+            background: rgba(255,255,255,0.10);
+            border: 1px solid rgba(255,255,255,0.08);
         }
-
-        @keyframes pulse {
-            0% { transform: scale(1); opacity: 0.6; }
-            50% { transform: scale(1.1); opacity: 1; }
-            100% { transform: scale(1); opacity: 0.6; }
-        }
-
-        .sync-pulse {
+        .sp-fake-input-right-cv2::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
             width: 6px;
             height: 6px;
-            background: #4A90E2;
-            border-radius: 50%;
-            margin-right: 8px;
-            animation: pulse 1.5s infinite;
+            border-top: 1.5px solid rgba(255,255,255,0.56);
+            border-right: 1.5px solid rgba(255,255,255,0.56);
+            transform: translate(-62%, -50%) rotate(45deg);
         }
 
+        /* 真实输入框容器 (默认隐藏) */
+        #real-input-container {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(20, 20, 25, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 10px 15px 30px 15px;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+            z-index: 20;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        #real-input-container.active { transform: translateY(0); }
+
+        #real-msg-input {
+            width: 100%;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 10px;
+            color: #fff;
+            padding: 10px;
+            font-size: 14px;
+            resize: none;
+            outline: none;
+        }
+
+        /* 消息样式 */
+        .sp-message-cv2 { display: flex; align-items: flex-start; gap: 8px; max-width: 100%; margin-bottom: 4px; }
+        .sp-message-cv2.self { justify-content: flex-end; }
+        
+        .sp-message-avatar-cv2 {
+            width: 32px; height: 32px; border-radius: 50%; background-size: cover; background-position: center; flex-shrink: 0; position: relative;
+        }
+        .sp-message-avatar-cv2::after { content: ""; position: absolute; inset: 0; border-radius: 50%; box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.18); }
+
+        .sp-message-main-cv2 { display: flex; flex-direction: column; max-width: 72%; }
+        .sp-message-main-cv2.self { align-items: flex-end; }
+
+        .sp-message-sender-cv2 { margin-bottom: 4px; font-size: 10px; font-weight: 600; color: #C9D4DE; }
+        .sp-message-sender-cv2.self { color: #F1D8D3; text-align: right; }
+
+        .sp-message-row-cv2 { display: flex; align-items: flex-end; gap: 5px; }
+        .sp-message-row-cv2.self { justify-content: flex-end; }
+
+        .sp-chat-time-cv2 { font-size: 9px; color: #97A3AF; margin-bottom: 2px; }
+
+        .sp-message-bubble-cv2 {
+            padding: 9px 11px; border-radius: 15px; font-size: 12px; line-height: 1.45; word-break: break-word;
+            backdrop-filter: blur(10px); box-shadow: 0 6px 14px rgba(0,0,0,0.12), inset 0 1px 0 rgba(255,255,255,0.05);
+        }
+        .sp-message-bubble-cv2:not(.self) { background: rgba(255,255,255,0.10); border: 1px solid rgba(255,255,255,0.08); color: #EEF4F8; border-top-left-radius: 6px; }
+        .sp-message-bubble-cv2.self { background: rgba(45, 45, 45, 0.40); border: 1px solid rgba(255,255,255,0.10); color: #ECEFF4; border-top-right-radius: 6px; }
+
+        /* 图片消息 */
+        .sp-photo-img-cv2 { max-width: 100%; border-radius: 10px; display: block; border: 1px solid rgba(255,255,255,0.1); margin-top: 4px; cursor: pointer; }
+
+        /* 遮罩层 */
+        #overlay {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.3); backdrop-filter: blur(4px); display: none; z-index: 15;
+        }
+
+        /* 贴纸/表情选择器 */
+        #sticker-panel {
+            position: absolute; bottom: 0; left: 0; right: 0; height: 300px; background: rgba(30, 30, 35, 0.95); backdrop-filter: blur(20px);
+            z-index: 25; transform: translateY(100%); transition: transform 0.3s ease; display: grid; grid-template-columns: repeat(4, 1fr); padding: 10px; gap: 10px; overflow-y: auto;
+        }
+        #sticker-panel.active { transform: translateY(0); }
+        .sticker-item { width: 100%; aspect-ratio: 1; border-radius: 8px; cursor: pointer; transition: transform 0.2s; }
+        .sticker-item:hover { transform: scale(1.1); }
     </style>
 </head>
 <body>
+    <div id="overlay"></div>
 
-    <div class="phone-shell">
-        <!-- 灵动岛 -->
-        <div class="dynamic-island" id="dynamic-island">
-            <div class="sync-pulse" id="sync-pulse" style="display: none;"></div>
-            <div class="dynamic-island-status" id="dynamic-status">数据同步中...</div>
-        </div>
-
-        <div class="phone-header">
-            <div class="phone-title" id="char-name-title">Messages</div>
-            <div class="status-dots">
-                <span></span><span></span><span></span>
+    <div class="sp-phone-wrap-cv2" id="phone-shell">
+        <div class="sp-phone-screen-cv2">
+            <!-- 顶部栏 -->
+            <div class="sp-phone-header-cv2">
+                <div class="sp-phone-title-cv2" id="chat-title">SillyPhone</div>
+                <div class="sp-phone-dots-cv2" id="settings-btn"><span></span><span></span><span></span></div>
             </div>
-        </div>
 
-        <div class="chat-body" id="chat-body">
-            <!-- 消息列表 -->
-        </div>
+            <!-- 聊天区域 -->
+            <div class="sp-chat-body-cv2" id="chat-body">
+                <!-- 消息将注入到这里 -->
+            </div>
 
-        <div class="input-area">
-            <input type="text" id="phone-input" placeholder="输入消息..." autocomplete="off">
-            <button class="send-btn" id="send-btn">
-                <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
-            </button>
+            <!-- 假输入框 (入口) -->
+            <div class="sp-fake-input-cv2" id="fake-input-trigger">
+                <span class="sp-fake-input-left-cv2" id="add-btn"></span>
+                <span class="sp-fake-input-text-cv2" id="typing-placeholder">发送消息...</span>
+                <span class="sp-fake-input-right-cv2" id="send-btn-trigger"></span>
+            </div>
+
+            <!-- 真实输入面板 -->
+            <div id="real-input-container">
+                <textarea id="real-msg-input" placeholder="输入消息..." rows="1"></textarea>
+                <div style="display: flex; justify-content: space-between; margin-top: 10px;">
+                    <div style="display: flex; gap: 15px;">
+                        <span id="open-stickers" style="cursor: pointer; opacity: 0.7;">贴纸</span>
+                        <span id="open-photo" style="cursor: pointer; opacity: 0.7;">照片</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 贴纸面板 -->
+            <div id="sticker-panel">
+                <!-- 贴纸将注入到这里 -->
+            </div>
+            
+            <input type="file" id="real-photo-input" style="display: none;" accept="image/*">
         </div>
     </div>
 
-    <script>
-        const state = {
-            currentMsgId: null,
-            messageHistory: [],
-            charName: "Character",
-            userName: "User",
-            charAvatar: "",
-            userAvatar: "",
-            isSyncing: false,
-            syncTimeout: null
-        };
-
-        // ===== 核心接口检测与初始化 =====
-        async function init() {
-            try {
-                // 检测 SillyTavern 注入函数
-                if (typeof getCurrentMessageId !== 'function') {
-                    console.error("未检测到 JS-Slash-Runner 环境");
-                    showSystemMsg("❗ 环境异常：请在 SillyTavern 中运行");
-                    return;
-                }
-
-                state.currentMsgId = getCurrentMessageId();
-                if (state.currentMsgId === null) {
-                    showSystemMsg("❗ 未找到当前楼层 ID");
-                    return;
-                }
-
-                // 获取名称与头像
-                if (typeof getCurrentCharName === 'function') state.charName = getCurrentCharName();
-                if (typeof getCurrentCharAvatar === 'function') state.charAvatar = getCurrentCharAvatar();
-                if (typeof getUserAvatar === 'function') state.userAvatar = getUserAvatar();
-
-                document.getElementById('char-name-title').innerText = state.charName;
-
-                await loadHistory();
-                
-            } catch (e) {
-                console.error("初始化失败:", e);
-            }
-        }
-
-        // ===== 数据加载与解析 =====
-        async function loadHistory() {
-            try {
-                const messages = getChatMessages(state.currentMsgId);
-                if (!messages || !messages[0]) return;
-
-                const rawText = String(messages[0].message || "");
-                state.messageHistory = parseSillyPhoneLog(rawText);
-                renderAllMessages();
-            } catch (e) {
-                console.error("加载历史失败:", e);
-            }
-        }
-
-        function parseSillyPhoneLog(text) {
-            const history = [];
-            // 支持多种容器标签，或者直接解析全文
-            const content = text.match(/<(?:phone_chat|shouji)>([\s\S]*?)<\/(?:phone_chat|shouji)>/)?.[1] || text;
-            
-            // 正则匹配 {网名|内容|时间}、{时间提示|时间}、{系统提示|内容}
-            const regex = /\{(.*?)\|(.*?)\|(.*?)\}/g;
-            const sysRegex = /\{系统提示\|(.*?)\}/g;
-            const timeRegex = /\{时间提示\|(.*?)\}/g;
-
-            // 这是一个简单的按顺序解析逻辑
-            // 为了简单起见，我们先用一种通用的正则匹配所有括号内容，再内部判断类型
-            const allBlocks = text.match(/\{.*?\}/g) || [];
-            
-            allBlocks.forEach(block => {
-                const parts = block.slice(1, -1).split('|');
-                if (parts.length === 2) {
-                    if (parts[0] === '系统提示') {
-                        history.push({ type: 'system', content: parts[1] });
-                    } else if (parts[0] === '时间提示') {
-                        history.push({ type: 'time', content: parts[1] });
-                    }
-                } else if (parts.length >= 3) {
-                    // 处理 {网名|内容|时间} 或更复杂的格式
-                    const [name, content, time] = parts;
-                    let type = 'text';
-                    let realContent = content;
-                    let extra = {};
-
-                    // 检测特殊前缀 (如 图片:xxx, 语音时长:xxx)
-                    if (content.startsWith('图片:')) {
-                        type = 'image';
-                        realContent = content.replace('图片:', '').trim();
-                    } else if (content.startsWith('语音时长:')) {
-                        type = 'voice';
-                        const voiceParts = content.split(':');
-                        extra.duration = voiceParts[1];
-                        realContent = voiceParts.slice(2).join(':'); // 语音内容
-                    } else if (content.startsWith('表情包')) {
-                        type = 'sticker';
-                    } else if (content.startsWith('转账:')) {
-                        type = 'transfer';
-                    } else if (content.startsWith('已收款:')) {
-                        type = 'received';
-                    }
-
-                    history.push({
-                        type,
-                        name,
-                        content: realContent,
-                        time,
-                        isSelf: (name === 'Chaos' || name === 'You' || name === 'User'), // 简单判断，后续可优化
-                        extra
-                    });
-                }
-            });
-
-            return history;
-        }
-
-        // ===== 渲染逻辑 =====
-        function renderAllMessages() {
-            const container = document.getElementById('chat-body');
-            container.innerHTML = '';
-            state.messageHistory.forEach(msg => appendMessageDOM(msg));
-            scrollToBottom();
-        }
-
-        function appendMessageDOM(msg) {
-            const container = document.getElementById('chat-body');
-            let html = '';
-
-            if (msg.type === 'system') {
-                html = `<div class="sys-msg">${msg.content}</div>`;
-            } else if (msg.type === 'time') {
-                html = `<div class="time-divider">${msg.content}</div>`;
-            } else {
-                const isSelf = msg.isSelf;
-                const avatar = isSelf ? state.userAvatar : state.charAvatar;
-                
-                let contentHTML = msg.content;
-                if (msg.type === 'image') {
-                    contentHTML = `<div class="media-content"><img src="${msg.content}" class="media-img"></div>`;
-                } else if (msg.type === 'voice') {
-                    contentHTML = `<div class="voice-bubble"><span class="voice-icon">🔊 ${msg.extra.duration}</span><span>${msg.content}</span></div>`;
-                }
-
-                html = `
-                    <div class="msg-row ${isSelf ? 'self' : ''}">
-                        <div class="msg-container">
-                            <div class="avatar" style="background-image: url('${avatar}')"></div>
-                            <div class="bubble-wrap">
-                                <span class="sender-name">${msg.name}</span>
-                                <div class="bubble">${contentHTML}</div>
-                                <span class="msg-time">${msg.time}</span>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            }
-
-            container.insertAdjacentHTML('beforeend', html);
-            scrollToBottom();
-        }
-
-        function showSystemMsg(text) {
-            appendMessageDOM({ type: 'system', content: text });
-        }
-
-        function scrollToBottom() {
-            const chatBody = document.getElementById('chat-body');
-            chatBody.scrollTop = chatBody.scrollHeight;
-        }
-
-        // ===== 交互与同步 =====
-        document.getElementById('send-btn').onclick = handleSend;
-        document.getElementById('phone-input').onkeypress = (e) => {
-            if (e.key === 'Enter') handleSend();
-        };
-
-        async function handleSend() {
-            const input = document.getElementById('phone-input');
-            const content = input.value.trim();
-            if (!content) return;
-
-            input.value = '';
-            
-            // 构造消息对象
-            const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-            const msg = {
-                type: 'text',
-                name: 'Chaos', // 默认用户网名
-                content: content,
-                time: time,
-                isSelf: true
-            };
-
-            state.messageHistory.push(msg);
-            appendMessageDOM(msg);
-            
-            await syncToSillyTavern();
-            await triggerAI();
-        }
-
-        async function syncToSillyTavern() {
-            setSyncStatus(true);
-            try {
-                const rawText = serializeHistory();
-                // 包裹在 <phone_chat> 标签中
-                const fullText = `<phone_chat>\n${rawText}\n</phone_chat>`;
-                
-                await setChatMessages([{
-                    message_id: state.currentMsgId,
-                    message: fullText
-                }], { refresh: 'none' });
-
-            } catch (e) {
-                console.error("同步失败:", e);
-            } finally {
-                setTimeout(() => setSyncStatus(false), 800);
-            }
-        }
-
-        function serializeHistory() {
-            return state.messageHistory.map(msg => {
-                if (msg.type === 'system') return `{系统提示|${msg.content}}`;
-                if (msg.type === 'time') return `{时间提示|${msg.content}}`;
-                
-                let content = msg.content;
-                if (msg.type === 'image') content = `图片:${msg.content}`;
-                if (msg.type === 'voice') content = `语音时长:${msg.extra.duration}:${msg.content}`;
-                
-                return `{${msg.name}|${content}|${msg.time}}`;
-            }).join('\n');
-        }
-
-        async function triggerAI() {
-            if (typeof generateRaw !== 'function') return;
-
-            setIslandActive(true, "对方正在输入...");
-            
-            try {
-                const response = await generateRaw({
-                    ordered_prompts: [
-                        { role: 'system', content: '你现在在手机聊天模式。只输出格式为 {网名|内容|时间} 的内容。' },
-                        'chat_history',
-                        'user_input'
-                    ],
-                    user_input: "不要解释，直接回复聊天内容。",
-                    should_stream: false 
-                });
-
-                if (response) {
-                    const newMsgs = parseSillyPhoneLog(response);
-                    newMsgs.forEach(m => {
-                        m.isSelf = false;
-                        state.messageHistory.push(m);
-                        appendMessageDOM(m);
-                    });
-                    await syncToSillyTavern();
-                }
-            } catch (e) {
-                console.error("AI 生成失败:", e);
-            } finally {
-                setIslandActive(false);
-            }
-        }
-
-        function setIslandActive(active, text = "") {
-            const island = document.getElementById('dynamic-island');
-            const status = document.getElementById('dynamic-status');
-            if (active) {
-                island.classList.add('active');
-                status.innerText = text;
-            } else {
-                island.classList.remove('active');
-            }
-        }
-
-        function setSyncStatus(syncing) {
-            const pulse = document.getElementById('sync-pulse');
-            pulse.style.display = syncing ? 'block' : 'none';
-        }
-
-        // 启动
-        window.onload = init;
-    </script>
+    <script src="phone-v3.js"></script>
 </body>
 </html>
