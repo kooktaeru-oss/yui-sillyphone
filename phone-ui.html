@@ -3,337 +3,106 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SillyPhone v3 - Combined</title>
+    <title>SillyPhone v3 - Ether Shell x Ctrl Core</title>
     <style>
-        /* ===== 手机外壳：更深更高级版 (来自用户美化文件) ===== */
-        
+        /* ===== 手机外壳：以太外壳 (Ether Shell) ===== */
         body {
-            margin: 0;
-            padding: 0;
-            background: transparent;
-            font-family: 'Outfit', 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            color: #fff;
-            overflow: hidden;
+            margin: 0; padding: 0; background: transparent;
+            font-family: 'Outfit', 'Inter', -apple-system, sans-serif;
+            color: #fff; overflow: hidden;
         }
 
-        /**时间提示**/
-        .sp-time-divider-cv2 {
-            display: flex;
-            justify-content: center;
-            margin: 10px 0 4px;
-            width: 100%;
-        }
-
-        .sp-time-divider-text-cv2 {
-            display: inline-block;
-            padding: 4px 10px;
-            border-radius: 999px;
-            font-size: 9px;
-            line-height: 1;
-            color: rgba(255,255,255,0.42);
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.06);
-            backdrop-filter: blur(6px);
-            -webkit-backdrop-filter: blur(6px);
-        }
-
-        /**系统提示**/
-        .sp-system-row-cv2 {
-            display: flex;
-            justify-content: center;
-            margin: 8px 0;
-            width: 100%;
-        }
-
-        .sp-system-pill-cv2 {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            max-width: 82%;
-            padding: 6px 10px;
-            border-radius: 999px;
-            background: rgba(255, 255, 255, 0.07);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 3px 10px rgba(0,0,0,0.10), inset 0 1px 0 rgba(255,255,255,0.05);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-        }
-
-        .sp-system-text-cv2 {
-            font-size: 10px;
-            line-height: 1.4;
-            color: rgba(255,255,255,0.78);
-            word-break: break-word;
-            text-align: center;
-        }
-
-        /**手机整体**/
         .sp-phone-wrap-cv2 {
-            width: 320px;
-            height: 550px;
-            margin: 20px auto;
-            padding: 2px;
-            border-radius: 38px;
-            position: relative;
-            overflow: hidden;
-            background: rgba(34, 34, 40, 0.56);
-            border: 1px solid rgba(72, 72, 82, 0.52);
-            box-shadow: 0 22px 44px rgba(0, 0, 0, 0.30), 0 8px 18px rgba(0, 0, 0, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.10), inset 0 -1px 0 rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-        }
-
-        .sp-phone-wrap-cv2::after {
-            content: "";
-            position: absolute;
-            inset: 0;
-            border-radius: inherit;
-            pointer-events: none;
-            box-shadow: inset 0 0 0 0.6px rgba(68, 68, 76, 0.20), inset 0 1px 1px rgba(255, 255, 255, 0.04);
+            width: 320px; height: 550px; margin: 20px auto; padding: 2px;
+            border-radius: 38px; position: relative; overflow: hidden;
+            background: rgba(34, 34, 40, 0.56); border: 1px solid rgba(72, 72, 82, 0.52);
+            box-shadow: 0 22px 44px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
         }
 
         /* 灵动岛 */
         .sp-phone-wrap-cv2::before {
-            content: "";
-            position: absolute;
-            top: 10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 102px;
-            height: 24px;
-            border-radius: 18px;
-            z-index: 6;
-            pointer-events: none;
-            background: rgba(40, 40, 46, 0.48);
-            border: 1px solid rgba(82, 82, 92, 0.20);
-            box-shadow: inset 0 1px 0 rgba(255,255,255,0.06), 0 1px 2px rgba(0,0,0,0.12);
-            backdrop-filter: blur(2px);
-            -webkit-backdrop-filter: blur(2px);
-            transition: all 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+            content: ""; position: absolute; top: 10px; left: 50%; transform: translateX(-50%);
+            width: 102px; height: 24px; border-radius: 18px; z-index: 200; pointer-events: none;
+            background: rgba(40, 40, 46, 0.48); border: 1px solid rgba(82, 82, 92, 0.2);
+            backdrop-filter: blur(2px); transition: all 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
         }
+        .sp-phone-wrap-cv2.thinking::before { width: 140px; background: rgba(50, 50, 60, 0.8); box-shadow: 0 0 15px rgba(255, 255, 255, 0.1); }
 
-        /* 灵动岛状态扩展 */
-        .sp-phone-wrap-cv2.thinking::before {
-            width: 140px;
-            background: rgba(50, 50, 60, 0.8);
-            box-shadow: 0 0 15px rgba(255, 255, 255, 0.15);
-        }
-
-        /* 屏幕区域 */
-        .sp-phone-screen-cv2 {
-            width: 100%;
-            height: 100%;
-            border-radius: 34px;
-            position: relative;
-            overflow: hidden;
-            background: rgba(72, 72, 80, 0.10);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: inset 0 1px 0 rgba(255,255,255,0.06), inset 0 -1px 0 rgba(255,255,255,0.02);
-            backdrop-filter: blur(1.5px);
-            -webkit-backdrop-filter: blur(1.5px);
-        }
+        .sp-phone-screen-cv2 { width: 100%; height: 100%; border-radius: 34px; position: relative; overflow: hidden; background: rgba(72, 72, 80, 0.1); }
 
         /* 顶部栏 */
-        .sp-phone-header-cv2 {
-            height: 52px;
-            padding: 18px 18px 0 18px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            color: rgba(255, 255, 255, 0.88);
-            font-size: 11px;
-            position: relative;
-            z-index: 3;
-        }
+        .sp-phone-header-cv2 { height: 52px; padding: 18px 18px 0 18px; display: flex; align-items: center; justify-content: space-between; position: relative; z-index: 3; }
+        .sp-phone-title-cv2 { font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.88); }
+        .sp-phone-dots-cv2 { display: flex; gap: 5px; cursor: pointer; }
+        .sp-phone-dots-cv2 span { width: 4px; height: 4px; border-radius: 50%; background: rgba(255,255,255,0.72); }
 
-        .sp-phone-title-cv2 {
-            font-size: 13px;
-            font-weight: 600;
-            letter-spacing: 0.2px;
-            color: rgba(255,255,255,0.88);
-            text-shadow: 0 1px 1px rgba(0,0,0,0.12);
+        /* 页面容器 */
+        .sp-page-container-cv2 {
+            position: absolute; top: 52px; bottom: 60px; left: 0; right: 0;
+            overflow-y: auto; scrollbar-width: none; display: none; flex-direction: column;
+            animation: fadeIn 0.3s ease;
         }
-
-        .sp-phone-dots-cv2 {
-            display: flex;
-            gap: 5px;
-            cursor: pointer;
-        }
-
-        .sp-phone-dots-cv2 span {
-            width: 4px;
-            height: 4px;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.72);
-            display: block;
-        }
+        .sp-page-container-cv2.active { display: flex; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
         /* 聊天区 */
-        .sp-chat-body-cv2 {
-            height: calc(100% - 52px);
-            padding: 8px 12px 72px 12px;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            position: relative;
-            z-index: 2;
-            scrollbar-width: none;
-            -ms-overflow-style: none;
-        }
-
-        .sp-chat-body-cv2::-webkit-scrollbar {
-            width: 0;
-            height: 0;
-            display: none;
-        }
-
-        /* 假输入框 (实际作为交互入口) */
-        .sp-fake-input-cv2 {
-            position: absolute;
-            left: 17px;
-            right: 17px;
-            bottom: 10px;
-            height: 34px;
-            border-radius: 20px;
-            z-index: 10;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 0 12px;
-            background: rgba(255, 255, 255, 0.07);
-            border: 1px solid rgba(255, 255, 255, 0.10);
-            box-shadow: inset 0 1px 0 rgba(255,255,255,0.08), 0 3px 10px rgba(0,0,0,0.08);
-            backdrop-filter: blur(6px);
-            -webkit-backdrop-filter: blur(6px);
-            cursor: text;
-        }
-
-        .sp-fake-input-left-cv2 {
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            flex-shrink: 0;
-            position: relative;
-            background: rgba(255,255,255,0.10);
-            border: 1px solid rgba(255,255,255,0.08);
-        }
-
-        .sp-fake-input-left-cv2::before, .sp-fake-input-left-cv2::after {
-            content: "";
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            background: rgba(255,255,255,0.55);
-            transform: translate(-50%, -50%);
-            border-radius: 2px;
-        }
-        .sp-fake-input-left-cv2::before { width: 8px; height: 1.5px; }
-        .sp-fake-input-left-cv2::after { width: 1.5px; height: 8px; }
-
-        .sp-fake-input-text-cv2 {
-            flex: 1;
-            min-width: 0;
-            font-size: 10px;
-            color: rgba(255,255,255,0.42);
-            letter-spacing: 0.2px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .sp-fake-input-right-cv2 {
-            width: 21px;
-            height: 21px;
-            border-radius: 50%;
-            flex-shrink: 0;
-            position: relative;
-            background: rgba(255,255,255,0.10);
-            border: 1px solid rgba(255,255,255,0.08);
-        }
-        .sp-fake-input-right-cv2::before {
-            content: "";
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 6px;
-            height: 6px;
-            border-top: 1.5px solid rgba(255,255,255,0.56);
-            border-right: 1.5px solid rgba(255,255,255,0.56);
-            transform: translate(-62%, -50%) rotate(45deg);
-        }
-
-        /* 真实输入框容器 (默认隐藏) */
-        #real-input-container {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: rgba(20, 20, 25, 0.95);
-            backdrop-filter: blur(20px);
-            padding: 10px 15px 30px 15px;
-            transform: translateY(100%);
-            transition: transform 0.3s ease;
-            z-index: 20;
-            border-top: 1px solid rgba(255,255,255,0.1);
-        }
-        #real-input-container.active { transform: translateY(0); }
-
-        #real-msg-input {
-            width: 100%;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 10px;
-            color: #fff;
-            padding: 10px;
-            font-size: 14px;
-            resize: none;
-            outline: none;
-        }
+        .sp-chat-body-cv2 { height: 100%; padding: 8px 12px 10px 12px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; }
+        .sp-chat-body-cv2::-webkit-scrollbar { display: none; }
 
         /* 消息样式 */
         .sp-message-cv2 { display: flex; align-items: flex-start; gap: 8px; max-width: 100%; margin-bottom: 4px; }
         .sp-message-cv2.self { justify-content: flex-end; }
-        
-        .sp-message-avatar-cv2 {
-            width: 32px; height: 32px; border-radius: 50%; background-size: cover; background-position: center; flex-shrink: 0; position: relative;
-        }
-        .sp-message-avatar-cv2::after { content: ""; position: absolute; inset: 0; border-radius: 50%; box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.18); }
-
+        .sp-message-avatar-cv2 { width: 32px; height: 32px; border-radius: 50%; background-size: cover; background-position: center; border: 1px solid rgba(255,255,255,0.1); }
         .sp-message-main-cv2 { display: flex; flex-direction: column; max-width: 72%; }
         .sp-message-main-cv2.self { align-items: flex-end; }
-
         .sp-message-sender-cv2 { margin-bottom: 4px; font-size: 10px; font-weight: 600; color: #C9D4DE; }
-        .sp-message-sender-cv2.self { color: #F1D8D3; text-align: right; }
-
-        .sp-message-row-cv2 { display: flex; align-items: flex-end; gap: 5px; }
-        .sp-message-row-cv2.self { justify-content: flex-end; }
-
-        .sp-chat-time-cv2 { font-size: 9px; color: #97A3AF; margin-bottom: 2px; }
-
         .sp-message-bubble-cv2 {
             padding: 9px 11px; border-radius: 15px; font-size: 12px; line-height: 1.45; word-break: break-word;
-            backdrop-filter: blur(10px); box-shadow: 0 6px 14px rgba(0,0,0,0.12), inset 0 1px 0 rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px); box-shadow: 0 6px 14px rgba(0,0,0,0.12);
         }
-        .sp-message-bubble-cv2:not(.self) { background: rgba(255,255,255,0.10); border: 1px solid rgba(255,255,255,0.08); color: #EEF4F8; border-top-left-radius: 6px; }
-        .sp-message-bubble-cv2.self { background: rgba(45, 45, 45, 0.40); border: 1px solid rgba(255,255,255,0.10); color: #ECEFF4; border-top-right-radius: 6px; }
+        .sp-message-bubble-cv2:not(.self) { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.08); color: #EEF4F8; border-top-left-radius: 6px; }
+        .sp-message-bubble-cv2.self { background: rgba(45, 45, 45, 0.4); border: 1px solid rgba(255,255,255,0.1); color: #ECEFF4; border-top-right-radius: 6px; }
+        .sp-chat-time-cv2 { font-size: 9px; color: #97A3AF; margin-top: 2px; }
 
-        /* 图片消息 */
-        .sp-photo-img-cv2 { max-width: 100%; border-radius: 10px; display: block; border: 1px solid rgba(255,255,255,0.1); margin-top: 4px; cursor: pointer; }
-
-        /* 遮罩层 */
-        #overlay {
-            position: fixed; inset: 0; background: rgba(0,0,0,0.3); backdrop-filter: blur(4px); display: none; z-index: 15;
+        /* 假输入框 */
+        .sp-fake-input-cv2 {
+            position: absolute; left: 17px; right: 17px; bottom: 10px; height: 34px; border-radius: 20px;
+            display: flex; align-items: center; gap: 10px; padding: 0 12px;
+            background: rgba(255, 255, 255, 0.07); border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(6px); cursor: text;
         }
+        .sp-fake-input-text-cv2 { flex: 1; font-size: 10px; color: rgba(255,255,255,0.42); overflow: hidden; }
 
-        /* 贴纸/表情选择器 */
-        #sticker-panel {
-            position: absolute; bottom: 0; left: 0; right: 0; height: 300px; background: rgba(30, 30, 35, 0.95); backdrop-filter: blur(20px);
-            z-index: 25; transform: translateY(100%); transition: transform 0.3s ease; display: grid; grid-template-columns: repeat(4, 1fr); padding: 10px; gap: 10px; overflow-y: auto;
+        /* 通讯录 & 朋友圈 */
+        .sp-contact-list-cv2 { padding: 10px; gap: 10px; display: flex; flex-direction: column; }
+        .sp-contact-item-cv2 {
+            display: flex; align-items: center; gap: 12px; padding: 10px;
+            background: rgba(255, 255, 255, 0.05); border-radius: 12px; cursor: pointer;
         }
-        #sticker-panel.active { transform: translateY(0); }
-        .sticker-item { width: 100%; aspect-ratio: 1; border-radius: 8px; cursor: pointer; transition: transform 0.2s; }
-        .sticker-item:hover { transform: scale(1.1); }
+        .sp-contact-avatar-cv2 { width: 40px; height: 40px; border-radius: 12px; background-size: cover; }
+        .sp-contact-name-cv2 { font-size: 14px; font-weight: 600; }
+
+        .sp-moments-feed-cv2 { padding: 15px; display: flex; flex-direction: column; gap: 20px; }
+        .sp-moment-item-cv2 { background: rgba(255, 255, 255, 0.03); border-radius: 16px; padding: 12px; border: 1px solid rgba(255,255,255,0.05); }
+
+        /* 底部导航 */
+        .sp-bottom-nav-cv2 {
+            position: absolute; bottom: 0; left: 0; right: 0; height: 60px;
+            background: rgba(40, 40, 46, 0.85); backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1); display: flex; justify-content: space-around; align-items: center; z-index: 100;
+        }
+        .sp-nav-item-cv2 { display: flex; flex-direction: column; align-items: center; gap: 4px; opacity: 0.5; transition: 0.3s; cursor: pointer; }
+        .sp-nav-item-cv2.active { opacity: 1; transform: translateY(-2px); }
+        .sp-nav-text-cv2 { font-size: 10px; font-weight: 500; }
+
+        /* 真实提示 */
+        #real-input-container { position: absolute; bottom: 0; left: 0; right: 0; background: rgba(20, 20, 25, 0.95); backdrop-filter: blur(20px); padding: 10px 15px 30px 15px; transform: translateY(100%); transition: 0.3s; z-index: 200; border-top: 1px solid rgba(255,255,255,0.1); }
+        #real-input-container.active { transform: translateY(0); }
+        #real-msg-input { width: 100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; color: #fff; padding: 10px; font-size: 14px; outline: none; }
+        #overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.3); backdrop-filter: blur(4px); display: none; z-index: 150; }
+        
+        .sp-photo-img-cv2 { max-width: 100%; border-radius: 10px; margin-top: 5px; cursor: pointer; border: 1px solid rgba(255,255,255,0.1); }
     </style>
 </head>
 <body>
@@ -343,67 +112,81 @@
         <div class="sp-phone-screen-cv2">
             <!-- 顶部栏 -->
             <div class="sp-phone-header-cv2">
-                <div class="sp-phone-title-cv2" id="chat-title">SillyPhone</div>
+                <div class="sp-phone-title-cv2" id="chat-title">消息</div>
                 <div class="sp-phone-dots-cv2" id="settings-btn"><span></span><span></span><span></span></div>
             </div>
 
-            <!-- 聊天区域 -->
-            <div class="sp-chat-body-cv2" id="chat-body">
-                <!-- 消息将注入到这里 -->
+            <!-- 页面容器 -->
+            <div id="page-messages" class="sp-page-container-cv2 active">
+                <div class="sp-chat-body-cv2" id="chat-body"></div>
+                <div class="sp-fake-input-cv2" id="fake-input-trigger">
+                    <span class="sp-fake-input-text-cv2">发送消息...</span>
+                </div>
             </div>
 
-            <!-- 假输入框 (入口) -->
-            <div class="sp-fake-input-cv2" id="fake-input-trigger">
-                <span class="sp-fake-input-left-cv2" id="add-btn"></span>
-                <span class="sp-fake-input-text-cv2" id="typing-placeholder">发送消息...</span>
-                <span class="sp-fake-input-right-cv2" id="send-btn-trigger"></span>
+            <div id="page-contacts" class="sp-page-container-cv2">
+                <div class="sp-contact-list-cv2" id="contact-list"></div>
             </div>
 
-            <!-- 真实输入面板 -->
+            <div id="page-moments" class="sp-page-container-cv2">
+                <div class="sp-moments-feed-cv2" id="moments-feed"></div>
+            </div>
+
+            <!-- 底部导航栏 -->
+            <div class="sp-bottom-nav-cv2">
+                <div class="sp-nav-item-cv2 active" data-page="messages">
+                    <div class="sp-nav-text-cv2">消息</div>
+                </div>
+                <div class="sp-nav-item-cv2" data-page="contacts">
+                    <div class="sp-nav-text-cv2">通讯录</div>
+                </div>
+                <div class="sp-nav-item-cv2" data-page="moments">
+                    <div class="sp-nav-text-cv2">朋友圈</div>
+                </div>
+            </div>
+
+            <!-- 输入面板 -->
             <div id="real-input-container">
                 <textarea id="real-msg-input" placeholder="输入消息..." rows="1"></textarea>
                 <div style="display: flex; justify-content: space-between; margin-top: 10px;">
                     <div style="display: flex; gap: 15px;">
-                        <span id="open-stickers" style="cursor: pointer; opacity: 0.7;">贴纸</span>
-                        <span id="open-photo" style="cursor: pointer; opacity: 0.7;">照片</span>
+                        <span id="open-photo" style="cursor: pointer; opacity: 0.7; font-size: 12px;">照片</span>
                     </div>
+                    <span id="send-btn" style="cursor: pointer; color: #4F46E5; font-weight: 700;">发送</span>
                 </div>
             </div>
-
-            <!-- 贴纸面板 -->
-            <div id="sticker-panel">
-                <!-- 贴纸将注入到这里 -->
-            </div>
-            
             <input type="file" id="real-photo-input" style="display: none;" accept="image/*">
         </div>
     </div>
 
     <script>
 /**
- * SillyPhone v3 Engine - Combined Edition
+ * SillyPhone v3 - Ether Shell x Ctrl Core (Ported)
  */
-
 (function() {
     const state = {
         userName: 'User',
         userAvatar: 'https://files.catbox.moe/blaehb.jpg',
-        stUserName: '',
         currentMsgId: null,
         messageHistory: [],
         privateConversations: [],
-        currentChat: null,
+        groupConversations: [],
         moments: [],
-        syncTimer: null
+        currentChat: null,
+        activeTab: 'messages',
+        syncTimer: null,
+        visionMode: 'tavern' // tavern, kimi, custom
     };
 
     const st = {
-        getChatMessages: (typeof getChatMessages === 'function') ? getChatMessages : () => [],
-        setChatMessages: (typeof setChatMessages === 'function') ? setChatMessages : () => {},
-        getCurrentMessageId: (typeof getCurrentMessageId === 'function') ? getCurrentMessageId : () => null,
-        generateRaw: (typeof generateRaw === 'function') ? generateRaw : null,
-        getContext: (typeof SillyTavern !== 'undefined' && SillyTavern.getContext) ? SillyTavern.getContext : () => ({})
+        getChatMessages: (id) => (typeof getChatMessages === 'function' ? getChatMessages(id) : []),
+        setChatMessages: (msgs, opts) => (typeof setChatMessages === 'function' ? setChatMessages(msgs, opts) : null),
+        getCurrentMessageId: () => (typeof getCurrentMessageId === 'function' ? getCurrentMessageId() : null),
+        generateRaw: (data) => (typeof generateRaw === 'function' ? generateRaw(data) : null),
+        getContext: () => (typeof SillyTavern !== 'undefined' && SillyTavern.getContext ? SillyTavern.getContext() : {})
     };
+
+    // --- 逻辑：解析 & 同步 (Ctrl Core) ---
 
     function parseMessageLine(line) {
         line = line.trim();
@@ -411,14 +194,10 @@
         const content = line.substring(1, line.length - 1);
         const parts = content.split('|');
         if (parts[0] === '我方消息') {
-            if (parts[1] === '图片') {
-                return { senderId: 'user', type: 'photo', text: `[图片:${parts[2]}]`, url: parts[3].replace('IMGDATA:', ''), time: parts[parts.length - 1] };
-            }
+            if (parts[1] === '图片') return { senderId: 'user', type: 'photo', url: parts[3].replace('IMGDATA:', ''), time: parts[parts.length - 1] };
             return { senderId: 'user', type: 'text', text: parts[1], time: parts[2] };
         }
-        if (parts.length >= 4) {
-            return { senderId: 'char', senderName: parts[0], senderAvatar: parts[1], text: parts[2], time: parts[3] };
-        }
+        if (parts.length >= 4) return { senderId: 'char', senderName: parts[0], senderAvatar: parts[1], text: parts[2], time: parts[3] };
         return null;
     }
 
@@ -441,21 +220,27 @@
         const shoujiMatch = raw.match(/<shouji>([\s\S]*?)<\/shouji>/);
         if (!shoujiMatch) return;
         const content = shoujiMatch[1];
-        const privateMatches = [...content.matchAll(/<private>([\s\S]*?)<\/private>/g)];
-        if (privateMatches.length > 0) {
-            state.privateConversations = privateMatches.map(m => {
-                const block = m[1].trim();
-                const nameMatch = block.split('\n')[0].match(/【和(.*?)的聊天】/);
-                const name = nameMatch ? nameMatch[1] : '未知会话';
-                const parsedMsgs = block.split('\n').slice(1).map(parseMessageLine).filter(Boolean);
-                return { name, messages: parsedMsgs };
-            });
-            if (state.privateConversations.length > 0) switchChat(0);
-        } else {
-            const lines = content.replace(/<pyq>[\s\S]*?<\/pyq>/, '').split('\n');
-            const parsed = lines.map(parseMessageLine).filter(Boolean);
-            if (parsed.length > 0) { state.messageHistory = parsed; renderMessages(); }
+
+        // 私聊
+        const privateBlocks = [...content.matchAll(/<private>([\s\S]*?)<\/private>/g)];
+        state.privateConversations = privateBlocks.map(m => {
+            const block = m[1].trim();
+            const nameMatch = block.split('\n')[0].match(/【和(.*?)的聊天】/);
+            const name = nameMatch ? nameMatch[1] : '匿名会话';
+            const msgs = block.split('\n').slice(1).map(parseMessageLine).filter(Boolean);
+            return { name, messages: msgs };
+        });
+
+        // 朋友圈
+        const pyqMatch = content.match(/<pyq>([\s\S]*?)<\/pyq>/);
+        if (pyqMatch) {
+            // 简单朋友圈解析逻辑 (可扩展)
+            state.moments = pyqMatch[1].trim().split('\n').map(line => ({ text: line }));
         }
+
+        if (state.privateConversations.length > 0) switchChat(0);
+        renderContacts();
+        renderMoments();
     }
 
     function syncToST() {
@@ -464,119 +249,198 @@
         const messages = st.getChatMessages(id);
         if (!messages || messages.length === 0) return;
         const raw = messages[0].message || '';
-        let newShoujiContent = '';
-        if (state.privateConversations.length > 0) {
-            state.privateConversations.forEach(conv => {
-                newShoujiContent += `<private>\n【和${conv.name}的聊天】\n`;
-                conv.messages.forEach(m => { newShoujiContent += serializeMessage(m) + '\n'; });
-                newShoujiContent += `</private>\n`;
-            });
+
+        let newShouji = '';
+        state.privateConversations.forEach(conv => {
+            newShouji += `<private>\n【和${conv.name}的聊天】\n`;
+            conv.messages.forEach(m => { newShouji += serializeMessage(m) + '\n'; });
+            newShouji += `</private>\n`;
+        });
+
+        if (state.moments.length > 0) {
+            newShouji += `<pyq>\n${state.moments.map(m => m.text).join('\n')}\n</pyq>\n`;
         }
-        const pyqMatch = raw.match(/<pyq>([\s\S]*?)<\/pyq>/);
-        if (pyqMatch) newShoujiContent += pyqMatch[0] + '\n';
-        const newTag = `<shouji>\n${newShoujiContent.trim()}\n</shouji>`;
-        const updatedRaw = raw.includes('<shouji>') ? raw.replace(/<shouji>[\s\S]*?<\/shouji>/, newTag) : raw + '\n' + newTag;
-        st.setChatMessages([{ message_id: id, message: updatedRaw }], { refresh: 'none' });
+
+        const newTag = `<shouji>\n${newShouji.trim()}\n</shouji>`;
+        const updated = raw.includes('<shouji>') ? raw.replace(/<shouji>[\s\S]*?<\/shouji>/, newTag) : raw + '\n' + newTag;
+        st.setChatMessages([{ message_id: id, message: updated }], { refresh: 'none' });
     }
 
-    function deferredSync(delay = 1000) {
+    function deferredSync(delay = 500) {
         if (state.syncTimer) clearTimeout(state.syncTimer);
         state.syncTimer = setTimeout(syncToST, delay);
     }
 
-    const chatBody = document.getElementById('chat-body');
-    const chatTitle = document.getElementById('chat-title');
+    // --- UI 渲染 ---
 
     function renderMessages() {
-        chatBody.innerHTML = '';
-        state.messageHistory.forEach((msg) => {
-            const row = document.createElement('div');
+        const body = document.getElementById('chat-body');
+        body.innerHTML = '';
+        state.messageHistory.forEach(msg => {
             const isSelf = msg.senderId === 'user';
+            const row = document.createElement('div');
             row.className = `sp-message-cv2 ${isSelf ? 'self' : ''}`;
-            const avatarUrl = isSelf ? state.userAvatar : (msg.senderAvatar || 'https://files.catbox.moe/haxtdn.jpeg');
-            let contentHtml = msg.type === 'photo' ? `<img src="${msg.url}" class="sp-photo-img-cv2" onclick="window.open('${msg.url}')">` : `<div class="sp-message-bubble-cv2 ${isSelf ? 'self' : ''}">${msg.text}</div>`;
+            const avatar = isSelf ? state.userAvatar : (msg.senderAvatar || 'https://files.catbox.moe/haxtdn.jpeg');
+            const content = msg.type === 'photo' ? 
+                `<img src="${msg.url}" class="sp-photo-img-cv2" onclick="window.open('${msg.url}')">` : 
+                `<div class="sp-message-bubble-cv2 ${isSelf ? 'self' : ''}">${msg.text}</div>`;
+            
             row.innerHTML = `
-                ${!isSelf ? `<div class="sp-message-avatar-cv2" style="background-image: url('${avatarUrl}')"></div>` : ''}
+                ${!isSelf ? `<div class="sp-message-avatar-cv2" style="background-image: url('${avatar}')"></div>` : ''}
                 <div class="sp-message-main-cv2 ${isSelf ? 'self' : ''}">
-                    <div class="sp-message-sender-cv2 ${isSelf ? 'self' : ''}">${isSelf ? state.userName : (msg.senderName || 'AI')}</div>
+                    <div class="sp-message-sender-cv2 ${isSelf ? 'self' : ''}">${isSelf ? state.userName : msg.senderName}</div>
                     <div class="sp-message-row-cv2 ${isSelf ? 'self' : ''}">
-                        ${isSelf ? `<div class="sp-chat-time-cv2 self">${msg.time}</div>` : ''}
-                        ${contentHtml}
-                        ${!isSelf ? `<div class="sp-chat-time-cv2">${msg.time}</div>` : ''}
+                        ${content}
                     </div>
+                    <div class="sp-chat-time-cv2">${msg.time}</div>
                 </div>
-                ${isSelf ? `<div class="sp-message-avatar-cv2" style="background-image: url('${avatarUrl}')"></div>` : ''}
+                ${isSelf ? `<div class="sp-message-avatar-cv2" style="background-image: url('${avatar}')"></div>` : ''}
             `;
-            chatBody.appendChild(row);
+            body.appendChild(row);
         });
-        chatBody.scrollTop = chatBody.scrollHeight;
+        body.scrollTop = body.scrollHeight;
+    }
+
+    function renderContacts() {
+        const list = document.getElementById('contact-list');
+        list.innerHTML = '';
+        state.privateConversations.forEach((conv, idx) => {
+            const item = document.createElement('div');
+            item.className = 'sp-contact-item-cv2';
+            item.innerHTML = `
+                <div class="sp-contact-avatar-cv2" style="background-image: url('https://files.catbox.moe/haxtdn.jpeg')"></div>
+                <div class="sp-contact-info-cv2">
+                    <div class="sp-contact-name-cv2">${conv.name}</div>
+                    <div class="sp-contact-last-msg-cv2">${conv.messages.length ? conv.messages[conv.messages.length-1].text : '暂无消息'}</div>
+                </div>
+            `;
+            item.onclick = () => {
+                switchChat(idx);
+                switchPage('messages');
+            };
+            list.appendChild(item);
+        });
+    }
+
+    function renderMoments() {
+        const feed = document.getElementById('moments-feed');
+        feed.innerHTML = '';
+        state.moments.forEach(m => {
+            const item = document.createElement('div');
+            item.className = 'sp-moment-item-cv2';
+            item.innerHTML = `<div class="sp-moment-content-cv2">${m.text}</div>`;
+            feed.appendChild(item);
+        });
+    }
+
+    function switchPage(page) {
+        state.activeTab = page;
+        document.querySelectorAll('.sp-page-container-cv2').forEach(p => p.classList.remove('active'));
+        document.getElementById(`page-${page}`).classList.add('active');
+        document.querySelectorAll('.sp-nav-item-cv2').forEach(i => i.classList.remove('active'));
+        document.querySelector(`.sp-nav-item-cv2[data-page="${page}"]`).classList.add('active');
+        
+        const titles = { messages: state.currentChat ? state.currentChat.name : '消息', contacts: '通讯录', moments: '朋友圈' };
+        document.getElementById('chat-title').textContent = titles[page];
     }
 
     function switchChat(index) {
-        const conv = state.privateConversations[index];
-        if (!conv) return;
-        state.currentChat = conv;
-        state.messageHistory = conv.messages;
-        chatTitle.textContent = conv.name;
+        state.currentChat = state.privateConversations[index];
+        state.messageHistory = state.currentChat.messages;
         renderMessages();
     }
 
-    const fakeInput = document.getElementById('fake-input-trigger');
-    const inputContainer = document.getElementById('real-input-container');
-    const overlay = document.getElementById('overlay');
-    const realInput = document.getElementById('real-msg-input');
-    const sendBtnTrigger = document.getElementById('send-btn-trigger');
-
-    fakeInput.onclick = () => { inputContainer.classList.add('active'); overlay.style.display = 'block'; realInput.focus(); };
-    overlay.onclick = () => { inputContainer.classList.remove('active'); overlay.style.display = 'none'; };
+    // --- 交互 ---
 
     async function handleSendMessage() {
-        const text = realInput.value.trim();
+        const input = document.getElementById('real-msg-input');
+        const text = input.value.trim();
         if (!text) return;
-        const msg = { senderId: 'user', type: 'text', text: text, time: new Date().getHours() + ':' + new Date().getMinutes().toString().padStart(2, '0') };
+
+        const time = new Date().getHours() + ':' + new Date().getMinutes().toString().padStart(2, '0');
+        const msg = { senderId: 'user', type: 'text', text: text, time };
+        
+        if (!state.currentChat) {
+            state.currentChat = { name: 'AI', messages: [] };
+            state.privateConversations.push(state.currentChat);
+        }
+        
         state.messageHistory.push(msg);
-        realInput.value = '';
+        input.value = '';
         renderMessages();
-        if (!state.currentChat) { state.currentChat = { name: 'Chat', messages: state.messageHistory }; state.privateConversations = [state.currentChat]; }
-        deferredSync(500);
+        deferredSync();
         triggerAIResponse(text);
     }
-
-    sendBtnTrigger.onclick = handleSendMessage;
-    realInput.onkeypress = (e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSendMessage(); } };
 
     async function triggerAIResponse(userInput) {
         if (!st.generateRaw) return;
         document.getElementById('phone-shell').classList.add('thinking');
         try {
-            const context = st.getContext();
-            const reply = await st.generateRaw({ user_input: userInput, should_silence: true });
-            if (reply) {
-                const aiMsg = { senderId: 'char', senderName: context.character_name || 'AI', senderAvatar: context.character_avatar || '', text: String(reply).trim(), time: new Date().getHours() + ':' + new Date().getMinutes().toString().padStart(2, '0') };
+            const ctx = st.getContext();
+            // 识图检测 (Ctrl 逻辑简述)
+            let injectPrompt = "";
+            const lastMsg = state.messageHistory[state.messageHistory.length - 1];
+            if (lastMsg && lastMsg.type === 'photo') {
+                injectPrompt = `[用户发送了一张图片，请根据视觉信息回复]`;
+            }
+
+            const response = await st.generateRaw({ 
+                user_input: userInput, 
+                should_silence: true,
+                injects: [{ role: 'system', content: injectPrompt, position: 'in_chat' }]
+            });
+            
+            if (response) {
+                const aiMsg = {
+                    senderId: 'char', senderName: ctx.character_name || 'AI',
+                    senderAvatar: ctx.character_avatar || '',
+                    text: String(response).trim(),
+                    time: new Date().getHours() + ':' + new Date().getMinutes().toString().padStart(2, '0')
+                };
                 state.messageHistory.push(aiMsg);
                 renderMessages();
-                deferredSync(500);
+                deferredSync();
             }
-        } catch (e) { console.error('AI Error:', e); } finally { document.getElementById('phone-shell').classList.remove('thinking'); }
+        } catch (e) { console.error(e); } finally { document.getElementById('phone-shell').classList.remove('thinking'); }
     }
 
-    async function uploadImage(file) {
-        const bridgeUpload = (window.parent && window.parent.__uploadImageByPlugin) || window.__uploadImageByPlugin;
-        if (bridgeUpload) { try { const result = await bridgeUpload(file); return typeof result === 'string' ? result : result.url; } catch (e) { console.error('Upload failed:', e); }}
-        return null;
-    }
+    // --- 事件绑定 ---
+    document.getElementById('fake-input-trigger').onclick = () => {
+        document.getElementById('real-input-container').classList.add('active');
+        document.getElementById('overlay').style.display = 'block';
+        document.getElementById('real-msg-input').focus();
+    };
 
-    const photoInput = document.getElementById('real-photo-input');
-    document.getElementById('open-photo').onclick = () => photoInput.click();
-    photoInput.onchange = async (e) => {
+    document.getElementById('overlay').onclick = () => {
+        document.getElementById('real-input-container').classList.remove('active');
+        document.getElementById('overlay').style.display = 'none';
+    };
+
+    document.getElementById('send-btn').onclick = handleSendMessage;
+    document.getElementById('real-msg-input').onkeypress = (e) => {
+        if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSendMessage(); }
+    };
+
+    document.querySelectorAll('.sp-nav-item-cv2').forEach(item => {
+        item.onclick = () => switchPage(item.dataset.page);
+    });
+
+    document.getElementById('open-photo').onclick = () => document.getElementById('real-photo-input').click();
+    document.getElementById('real-photo-input').onchange = async (e) => {
         const file = e.target.files[0];
         if (!file) return;
-        const url = await uploadImage(file);
-        if (url) {
-            const msg = { senderId: 'user', type: 'photo', url: url, description: '图片', time: new Date().getHours() + ':' + new Date().getMinutes().toString().padStart(2, '0') };
-            state.messageHistory.push(msg); renderMessages(); deferredSync(500); triggerAIResponse('[图片]');
+        const upload = (window.parent && window.parent.__uploadImageByPlugin) || window.__uploadImageByPlugin;
+        if (upload) {
+            const url = await upload(file);
+            const msg = {
+                senderId: 'user', type: 'photo', url: (typeof url === 'string' ? url : url.url),
+                time: new Date().getHours() + ':' + new Date().getMinutes().toString().padStart(2, '0')
+            };
+            state.messageHistory.push(msg);
+            renderMessages();
+            deferredSync();
+            triggerAIResponse("[图片]");
         }
-        photoInput.value = '';
     };
 
     window.onload = loadFromSameLayer;
