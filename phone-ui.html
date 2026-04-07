@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SillyPhone v3 - Ether Shell</title>
+    <title>SillyPhone v3 - Combined</title>
     <style>
         /* ===== 手机外壳：更深更高级版 (来自用户美化文件) ===== */
         
@@ -379,6 +379,208 @@
         </div>
     </div>
 
-    <script src="phone-v3.js"></script>
+    <script>
+/**
+ * SillyPhone v3 Engine - Combined Edition
+ */
+
+(function() {
+    const state = {
+        userName: 'User',
+        userAvatar: 'https://files.catbox.moe/blaehb.jpg',
+        stUserName: '',
+        currentMsgId: null,
+        messageHistory: [],
+        privateConversations: [],
+        currentChat: null,
+        moments: [],
+        syncTimer: null
+    };
+
+    const st = {
+        getChatMessages: (typeof getChatMessages === 'function') ? getChatMessages : () => [],
+        setChatMessages: (typeof setChatMessages === 'function') ? setChatMessages : () => {},
+        getCurrentMessageId: (typeof getCurrentMessageId === 'function') ? getCurrentMessageId : () => null,
+        generateRaw: (typeof generateRaw === 'function') ? generateRaw : null,
+        getContext: (typeof SillyTavern !== 'undefined' && SillyTavern.getContext) ? SillyTavern.getContext : () => ({})
+    };
+
+    function parseMessageLine(line) {
+        line = line.trim();
+        if (!line.startsWith('[') || !line.endsWith(']')) return null;
+        const content = line.substring(1, line.length - 1);
+        const parts = content.split('|');
+        if (parts[0] === '我方消息') {
+            if (parts[1] === '图片') {
+                return { senderId: 'user', type: 'photo', text: `[图片:${parts[2]}]`, url: parts[3].replace('IMGDATA:', ''), time: parts[parts.length - 1] };
+            }
+            return { senderId: 'user', type: 'text', text: parts[1], time: parts[2] };
+        }
+        if (parts.length >= 4) {
+            return { senderId: 'char', senderName: parts[0], senderAvatar: parts[1], text: parts[2], time: parts[3] };
+        }
+        return null;
+    }
+
+    function serializeMessage(msg) {
+        const time = msg.time || new Date().getHours() + ':' + new Date().getMinutes().toString().padStart(2, '0');
+        if (msg.senderId === 'user') {
+            if (msg.type === 'photo') return `[我方消息|图片|${msg.description || ''}|IMGDATA:${msg.url || ''}|FILENAME:${msg.fileName || ''}|${time}]`;
+            return `[我方消息|${msg.text}|${time}]`;
+        }
+        return `[${msg.senderName || 'Char'}|${msg.senderAvatar || ''}|${msg.text}|${time}]`;
+    }
+
+    function loadFromSameLayer() {
+        const id = st.getCurrentMessageId();
+        if (id === null) return;
+        state.currentMsgId = id;
+        const messages = st.getChatMessages(id);
+        if (!messages || messages.length === 0) return;
+        const raw = messages[0].message || '';
+        const shoujiMatch = raw.match(/<shouji>([\s\S]*?)<\/shouji>/);
+        if (!shoujiMatch) return;
+        const content = shoujiMatch[1];
+        const privateMatches = [...content.matchAll(/<private>([\s\S]*?)<\/private>/g)];
+        if (privateMatches.length > 0) {
+            state.privateConversations = privateMatches.map(m => {
+                const block = m[1].trim();
+                const nameMatch = block.split('\n')[0].match(/【和(.*?)的聊天】/);
+                const name = nameMatch ? nameMatch[1] : '未知会话';
+                const parsedMsgs = block.split('\n').slice(1).map(parseMessageLine).filter(Boolean);
+                return { name, messages: parsedMsgs };
+            });
+            if (state.privateConversations.length > 0) switchChat(0);
+        } else {
+            const lines = content.replace(/<pyq>[\s\S]*?<\/pyq>/, '').split('\n');
+            const parsed = lines.map(parseMessageLine).filter(Boolean);
+            if (parsed.length > 0) { state.messageHistory = parsed; renderMessages(); }
+        }
+    }
+
+    function syncToST() {
+        if (state.currentMsgId === null) return;
+        const id = state.currentMsgId;
+        const messages = st.getChatMessages(id);
+        if (!messages || messages.length === 0) return;
+        const raw = messages[0].message || '';
+        let newShoujiContent = '';
+        if (state.privateConversations.length > 0) {
+            state.privateConversations.forEach(conv => {
+                newShoujiContent += `<private>\n【和${conv.name}的聊天】\n`;
+                conv.messages.forEach(m => { newShoujiContent += serializeMessage(m) + '\n'; });
+                newShoujiContent += `</private>\n`;
+            });
+        }
+        const pyqMatch = raw.match(/<pyq>([\s\S]*?)<\/pyq>/);
+        if (pyqMatch) newShoujiContent += pyqMatch[0] + '\n';
+        const newTag = `<shouji>\n${newShoujiContent.trim()}\n</shouji>`;
+        const updatedRaw = raw.includes('<shouji>') ? raw.replace(/<shouji>[\s\S]*?<\/shouji>/, newTag) : raw + '\n' + newTag;
+        st.setChatMessages([{ message_id: id, message: updatedRaw }], { refresh: 'none' });
+    }
+
+    function deferredSync(delay = 1000) {
+        if (state.syncTimer) clearTimeout(state.syncTimer);
+        state.syncTimer = setTimeout(syncToST, delay);
+    }
+
+    const chatBody = document.getElementById('chat-body');
+    const chatTitle = document.getElementById('chat-title');
+
+    function renderMessages() {
+        chatBody.innerHTML = '';
+        state.messageHistory.forEach((msg) => {
+            const row = document.createElement('div');
+            const isSelf = msg.senderId === 'user';
+            row.className = `sp-message-cv2 ${isSelf ? 'self' : ''}`;
+            const avatarUrl = isSelf ? state.userAvatar : (msg.senderAvatar || 'https://files.catbox.moe/haxtdn.jpeg');
+            let contentHtml = msg.type === 'photo' ? `<img src="${msg.url}" class="sp-photo-img-cv2" onclick="window.open('${msg.url}')">` : `<div class="sp-message-bubble-cv2 ${isSelf ? 'self' : ''}">${msg.text}</div>`;
+            row.innerHTML = `
+                ${!isSelf ? `<div class="sp-message-avatar-cv2" style="background-image: url('${avatarUrl}')"></div>` : ''}
+                <div class="sp-message-main-cv2 ${isSelf ? 'self' : ''}">
+                    <div class="sp-message-sender-cv2 ${isSelf ? 'self' : ''}">${isSelf ? state.userName : (msg.senderName || 'AI')}</div>
+                    <div class="sp-message-row-cv2 ${isSelf ? 'self' : ''}">
+                        ${isSelf ? `<div class="sp-chat-time-cv2 self">${msg.time}</div>` : ''}
+                        ${contentHtml}
+                        ${!isSelf ? `<div class="sp-chat-time-cv2">${msg.time}</div>` : ''}
+                    </div>
+                </div>
+                ${isSelf ? `<div class="sp-message-avatar-cv2" style="background-image: url('${avatarUrl}')"></div>` : ''}
+            `;
+            chatBody.appendChild(row);
+        });
+        chatBody.scrollTop = chatBody.scrollHeight;
+    }
+
+    function switchChat(index) {
+        const conv = state.privateConversations[index];
+        if (!conv) return;
+        state.currentChat = conv;
+        state.messageHistory = conv.messages;
+        chatTitle.textContent = conv.name;
+        renderMessages();
+    }
+
+    const fakeInput = document.getElementById('fake-input-trigger');
+    const inputContainer = document.getElementById('real-input-container');
+    const overlay = document.getElementById('overlay');
+    const realInput = document.getElementById('real-msg-input');
+    const sendBtnTrigger = document.getElementById('send-btn-trigger');
+
+    fakeInput.onclick = () => { inputContainer.classList.add('active'); overlay.style.display = 'block'; realInput.focus(); };
+    overlay.onclick = () => { inputContainer.classList.remove('active'); overlay.style.display = 'none'; };
+
+    async function handleSendMessage() {
+        const text = realInput.value.trim();
+        if (!text) return;
+        const msg = { senderId: 'user', type: 'text', text: text, time: new Date().getHours() + ':' + new Date().getMinutes().toString().padStart(2, '0') };
+        state.messageHistory.push(msg);
+        realInput.value = '';
+        renderMessages();
+        if (!state.currentChat) { state.currentChat = { name: 'Chat', messages: state.messageHistory }; state.privateConversations = [state.currentChat]; }
+        deferredSync(500);
+        triggerAIResponse(text);
+    }
+
+    sendBtnTrigger.onclick = handleSendMessage;
+    realInput.onkeypress = (e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSendMessage(); } };
+
+    async function triggerAIResponse(userInput) {
+        if (!st.generateRaw) return;
+        document.getElementById('phone-shell').classList.add('thinking');
+        try {
+            const context = st.getContext();
+            const reply = await st.generateRaw({ user_input: userInput, should_silence: true });
+            if (reply) {
+                const aiMsg = { senderId: 'char', senderName: context.character_name || 'AI', senderAvatar: context.character_avatar || '', text: String(reply).trim(), time: new Date().getHours() + ':' + new Date().getMinutes().toString().padStart(2, '0') };
+                state.messageHistory.push(aiMsg);
+                renderMessages();
+                deferredSync(500);
+            }
+        } catch (e) { console.error('AI Error:', e); } finally { document.getElementById('phone-shell').classList.remove('thinking'); }
+    }
+
+    async function uploadImage(file) {
+        const bridgeUpload = (window.parent && window.parent.__uploadImageByPlugin) || window.__uploadImageByPlugin;
+        if (bridgeUpload) { try { const result = await bridgeUpload(file); return typeof result === 'string' ? result : result.url; } catch (e) { console.error('Upload failed:', e); }}
+        return null;
+    }
+
+    const photoInput = document.getElementById('real-photo-input');
+    document.getElementById('open-photo').onclick = () => photoInput.click();
+    photoInput.onchange = async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        const url = await uploadImage(file);
+        if (url) {
+            const msg = { senderId: 'user', type: 'photo', url: url, description: '图片', time: new Date().getHours() + ':' + new Date().getMinutes().toString().padStart(2, '0') };
+            state.messageHistory.push(msg); renderMessages(); deferredSync(500); triggerAIResponse('[图片]');
+        }
+        photoInput.value = '';
+    };
+
+    window.onload = loadFromSameLayer;
+})();
+    </script>
 </body>
 </html>
