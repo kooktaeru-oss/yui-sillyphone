@@ -21986,264 +21986,250 @@ ${GROUP_AIREQUEST_EXTRA_PROMPT_BODY}`;
       }, 100);
     });
   </script>
-
-
-
-
-  (function () {
-  const chatRoot = document.querySelector('.chat-messages');
+  <script>
+    const chatRoot = document.querySelector('.chat-messages');
   if (!chatRoot) return;
 
   const SAVE_FOLDER_NAME = 'stickers';
 
   function attachVisionToEmoji(img) {
-  if (!img || img.dataset.visionAttached) return;
-  img.dataset.visionAttached = '1';
+    if (!img || img.dataset.visionAttached) return;
+    img.dataset.visionAttached = '1';
 
-  const url = img.currentSrc || img.src;
-  const container = img.closest('.image-container') || wrapImage(img);
-  const indicator = ensureIndicator(container);
+    const url = img.currentSrc || img.src;
+    const container = img.closest('.image-container') || wrapImage(img);
+    const indicator = ensureIndicator(container);
 
-  const onAnalyze = async () => {
-  try {
-  indicator.style.opacity = '1';
-  const desc = await tryAnalyze(url);
-  showDescription(container, desc || '');
-
-  const shouldSave = confirm('将此图片保存为表情包到 SillyTavern 吗？');
-  if (shouldSave) {
-  const { ok, message, url: shortUrl } = await saveImageToSillyTavern(url, SAVE_FOLDER_NAME);
-  if (!ok) {
-  alert(message || '保存失败');
-  } else if (shortUrl) {
-  try { img.src = shortUrl; } catch (e) { }
-  try { if (navigator.clipboard) navigator.clipboard.writeText(shortUrl); } catch (e) { }
-  try {
-  const fileName = (shortUrl.split('/').pop() || '').trim() || ('sticker_' + Date.now() + '.png');
-  const now = new Date();
-  const hh = String(now.getHours()).padStart(2, '0');
-  const mm = String(now.getMinutes()).padStart(2, '0');
-  const timestamp = `${hh}:${mm}`;
-
-  if (window.state && Array.isArray(window.state.messageHistory) && typeof serializeShoujiLog === 'function' && typeof
-  setChatMessages === 'function' && typeof getCurrentMessageId === 'function') {
-  const newMsg = { sender: 'user', type: 'image', imageData: shortUrl, fileName: fileName, imageDescription: '表情包',
-  time: timestamp };
-  window.state.messageHistory.push(newMsg);
-  if (typeof window.appendMessage === 'function') {
-  window.appendMessage(newMsg, window.state.messageHistory.length - 1);
-  }
-  // 统一走同层同步逻辑，避免覆盖 <pyq> / <private> 等结构化块
+    const onAnalyze = async () => {
       try {
-      if (typeof window.deferredSync === 'function') {
-      window.deferredSync(0);
-      } else if (typeof window.syncToSillyTavern === 'function') {
-      await window.syncToSillyTavern();
-      } else {
-      const currentId = window.state.currentMsgId || getCurrentMessageId();
-      const log = serializeShoujiLog(window.state.messageHistory);
-      await setChatMessages([{ message_id: currentId, message: log }], { refresh: 'none' });
-      }
-      } catch (e) { }
-      } else if (typeof getCurrentMessageId === 'function' && typeof getChatMessages === 'function' && typeof
-      setChatMessages === 'function') {
-      const currentId = getCurrentMessageId();
-      const msg = getChatMessages(currentId)[0];
-      const raw = msg && msg.message ? String(msg.message) : '<shouji>\n</shouji>';
-      const line = `[我方消息|图片|表情包|IMGDATA:${shortUrl}|FILENAME:${fileName}|${timestamp}]`;
-      const updated = raw.replace(/<shouji>[\s\S]*?<\ /shouji>/, (m) => {
-          let inner = m.slice(8, -9);
-          // 若存在 <pyq>，把追加的聊天记录插到 <pyq> 之前，避免破坏朋友圈结构
-              const pyqIndex = inner.search(/<pyq>/i);
+        indicator.style.opacity = '1';
+        const desc = await tryAnalyze(url);
+        showDescription(container, desc || '');
+
+        const shouldSave = confirm('将此图片保存为表情包到 SillyTavern 吗？');
+        if (shouldSave) {
+          const { ok, message, url: shortUrl } = await saveImageToSillyTavern(url, SAVE_FOLDER_NAME);
+          if (!ok) {
+            alert(message || '保存失败');
+          } else if (shortUrl) {
+            try { img.src = shortUrl; } catch (e) { }
+            try { if (navigator.clipboard) navigator.clipboard.writeText(shortUrl); } catch (e) { }
+            
+            const fileName = (shortUrl.split('/').pop() || '').trim() || ('sticker_' + Date.now() + '.png');
+            const now = new Date();
+            const hh = String(now.getHours()).padStart(2, '0');
+            const mm = String(now.getMinutes()).padStart(2, '0');
+            const timestamp = `${hh}:${mm}`;
+
+            if (window.state && Array.isArray(window.state.messageHistory) && typeof serializeShoujiLog === 'function' && typeof setChatMessages === 'function' && typeof getCurrentMessageId === 'function') {
+              const newMsg = { 
+                sender: 'user', 
+                type: 'image', 
+                imageData: shortUrl, 
+                fileName: fileName, 
+                imageDescription: '表情包',
+                time: timestamp 
+              };
+              window.state.messageHistory.push(newMsg);
+              if (typeof window.appendMessage === 'function') {
+                window.appendMessage(newMsg, window.state.messageHistory.length - 1);
+              }
+              try {
+                if (typeof window.deferredSync === 'function') {
+                  window.deferredSync(0);
+                } else if (typeof window.syncToSillyTavern === 'function') {
+                  await window.syncToSillyTavern();
+                } else {
+                  const currentId = window.state.currentMsgId || getCurrentMessageId();
+                  const log = serializeShoujiLog(window.state.messageHistory);
+                  await setChatMessages([{ message_id: currentId, message: log }], { refresh: 'none' });
+                }
+              } catch (e) { }
+            } else if (typeof getCurrentMessageId === 'function' && typeof getChatMessages === 'function' && typeof setChatMessages === 'function') {
+              const currentId = getCurrentMessageId();
+              const msg = getChatMessages(currentId)[0];
+              const raw = msg && msg.message ? String(msg.message) : '<shouji>\n</shouji>';
+              const line = `[我方消息|图片|表情包|IMGDATA:${shortUrl}|FILENAME:${fileName}|${timestamp}]`;
+              const updated = raw.replace(/<shouji>([\s\S]*?)<\/shouji>/, (m, inner) => {
+                const pyqIndex = inner.search(/<pyq>/i);
                 if (pyqIndex >= 0) {
-                const before = inner.slice(0, pyqIndex).trimEnd();
-                const after = inner.slice(pyqIndex).trimStart();
-                const merged = `${before}\n${line}\n${after}`.trim();
-                return `<shouji>\n${merged}\n</shouji>`;
+                  const before = inner.slice(0, pyqIndex).trimEnd();
+                  const after = inner.slice(pyqIndex).trimStart();
+                  return `<shouji>\n${before}\n${line}\n${after}\n</shouji>`;
                 }
-                inner = inner.trim();
-                return `<shouji>\n${inner ? inner + '\n' : ''}${line}\n</shouji>`;
-                });
-                try { await setChatMessages([{ message_id: currentId, message: updated }], { refresh: 'none' }); } catch
-                (e) { }
-                }
-                } catch (e) { }
-                }
-                }
-                } catch (e) {
-                showDescription(container, '识别失败');
-                } finally {
-                setTimeout(() => indicator.style.opacity = '0', 800);
-                }
-                };
+                const body = inner.trim();
+                return `<shouji>\n${body ? body + '\n' : ''}${line}\n</shouji>`;
+              });
+              try { await setChatMessages([{ message_id: currentId, message: updated }], { refresh: 'none' }); } catch (e) { }
+            }
+          }
+        }
+      } catch (e) {
+        showDescription(container, '识别失败');
+      } finally {
+        setTimeout(() => indicator.style.opacity = '0', 800);
+      }
+    };
 
-                img.addEventListener('dblclick', onAnalyze);
-                img.addEventListener('contextmenu', (e) => { e.preventDefault(); onAnalyze(); });
-                }
+    img.addEventListener('dblclick', onAnalyze);
+    img.addEventListener('contextmenu', (e) => { e.preventDefault(); onAnalyze(); });
 
-                function wrapImage(img) {
-                const wrapper = document.createElement('span');
-                wrapper.className = 'image-container';
-                img.replaceWith(wrapper);
-                wrapper.appendChild(img);
-                return wrapper;
-                }
+    function wrapImage(img) {
+      const wrapper = document.createElement('span');
+      wrapper.className = 'image-container';
+      img.replaceWith(wrapper);
+      wrapper.appendChild(img);
+      return wrapper;
+    }
 
-                function ensureIndicator(container) {
-                let el = container.querySelector('.vision-analysis-indicator');
-                if (!el) {
-                el = document.createElement('span');
-                el.className = 'vision-analysis-indicator';
-                el.textContent = '等待评论';
-                el.style.opacity = '0';
-                container.appendChild(el);
-                }
-                return el;
-                }
+    function ensureIndicator(container) {
+      let el = container.querySelector('.vision-analysis-indicator');
+      if (!el) {
+        el = document.createElement('span');
+        el.className = 'vision-analysis-indicator';
+        el.textContent = '等待评论';
+        el.style.opacity = '0';
+        container.appendChild(el);
+      }
+      return el;
+    }
 
-                function showDescription(container, text) {
-                if (!text) return;
-                let el = container.querySelector('.image-description');
-                if (!el) {
-                el = document.createElement('div');
-                el.className = 'image-description';
-                container.appendChild(el);
-                }
-                el.textContent = text;
-                el.classList.add('show');
-                setTimeout(() => el.classList.remove('show'), 6000);
-                }
+    function showDescription(container, text) {
+      if (!text) return;
+      let el = container.querySelector('.image-description');
+      if (!el) {
+        el = document.createElement('div');
+        el.className = 'image-description';
+        container.appendChild(el);
+      }
+      el.textContent = text;
+      el.classList.add('show');
+      setTimeout(() => el.classList.remove('show'), 6000);
+    }
 
-                async function tryAnalyze(imageUrl) {
-                const analyzeByUrl =
-                (window.VisionPlugin && window.VisionPlugin.analyzeUrl)
-                || (window.识图插件 && window.识图插件.识图)
-                || null;
+    async function tryAnalyze(imageUrl) {
+      const analyzeByUrl = (window.VisionPlugin && window.VisionPlugin.analyzeUrl) || 
+                           (window.识图插件 && window.识图插件.识图) || null;
+      if (analyzeByUrl) {
+        return await analyzeByUrl(imageUrl);
+      }
+      const file = await fetchImageAsFile(imageUrl);
+      if (file && window.__uploadImageByPlugin) {
+        const result = await window.__uploadImageByPlugin(file, {});
+        return (result && (result.description || result.text || result.summary)) || '';
+      }
+      return '';
+    }
 
-                if (analyzeByUrl) {
-                return await analyzeByUrl(imageUrl);
-                }
+    async function saveImageToSillyTavern(imageUrl, folder) {
+      try {
+        const file = await fetchImageAsFile(imageUrl);
+        if (!file) return { ok: false, message: '获取图片失败' };
+        const { base64, format } = await fileToBase64AndFormat(file);
+        if (!base64 || !format) return { ok: false, message: '不支持的图片格式' };
+        const filename = `${folder}_` + Date.now() + '.' + format;
+        const body = { image: base64, format, filename };
+        const res = await fetch('/api/images/upload', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body),
+          cache: 'no-cache',
+        });
+        if (!res.ok) return { ok: false, message: '上传失败: ' + res.status };
+        const data = await res.json().catch(() => null);
+        const shortUrl = (data && data.path) ? data.path : null;
+        return { ok: true, url: shortUrl };
+      } catch (err) {
+        return { ok: false, message: String(err) };
+      }
+    }
 
-                const file = await fetchImageAsFile(imageUrl);
-                if (file && window.__uploadImageByPlugin) {
-                const result = await window.__uploadImageByPlugin(file, {});
-                return (result && (result.description || result.text || result.summary)) || '';
-                }
-                return '';
-                }
+    async function fetchImageAsFile(imageUrl) {
+      try {
+        const resp = await fetch(imageUrl, { mode: 'cors' });
+        if (!resp.ok) throw new Error('fetch 失败');
+        const blob = await resp.blob();
+        const ext = guessExtFromType(blob.type) || 'png';
+        return new File([blob], 'emoji.' + ext, { type: blob.type || 'image/' + ext });
+      } catch (e) {
+        try {
+          return await drawImageToFile(imageUrl);
+        } catch {
+          return null;
+        }
+      }
+    }
 
-                async function saveImageToSillyTavern(imageUrl, folder) {
-                try {
-                const file = await fetchImageAsFile(imageUrl);
-                if (!file) return { ok: false, message: '获取图片失败' };
+    function guessExtFromType(type) {
+      if (!type) return '';
+      if (type.includes('png')) return 'png';
+      if (type.includes('jpeg') || type.includes('jpg')) return 'jpg';
+      if (type.includes('webp')) return 'webp';
+      if (type.includes('gif')) return 'gif';
+      if (type.includes('bmp')) return 'bmp';
+      return '';
+    }
 
-                const { base64, format } = await fileToBase64AndFormat(file);
-                if (!base64 || !format) return { ok: false, message: '不支持的图片格式' };
+    async function drawImageToFile(src) {
+      return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.crossOrigin = 'anonymous';
+        img.onload = () => {
+          try {
+            const canvas = document.createElement('canvas');
+            canvas.width = img.naturalWidth;
+            canvas.height = img.naturalHeight;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0);
+            canvas.toBlob((blob) => {
+              if (!blob) return reject('toBlob 失败');
+              resolve(new File([blob], 'emoji.png', { type: 'image/png' }));
+            }, 'image/png');
+          } catch (e) {
+            reject(e);
+          }
+        };
+        img.onerror = reject;
+        img.src = src;
+      });
+    }
 
-                const filename = `${folder}_` + Date.now() + '.' + format;
-                const body = { image: base64, format, filename };
-                const res = await fetch('/api/images/upload', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(body),
-                cache: 'no-cache',
-                });
-                if (!res.ok) return { ok: false, message: '上传失败: ' + res.status };
-                const data = await res.json().catch(() => null);
-                const shortUrl = (data && data.path) ? data.path : null;
-                return { ok: true, url: shortUrl };
-                } catch (err) {
-                return { ok: false, message: String(err) };
-                }
-                }
+    async function fileToBase64AndFormat(file) {
+      const ext = (file.name.split('.').pop() || '').toLowerCase();
+      const format = ext === 'jpg' ? 'jpeg' : ext;
+      const ok = ['png', 'jpeg', 'jpg', 'webp', 'gif', 'bmp'].includes(ext);
+      if (!ok) return { base64: null, format: null };
+      const base64 = await fileToBase64(file);
+      const comma = base64.indexOf(',');
+      return { base64: comma >= 0 ? base64.slice(comma + 1) : base64, format };
+    }
 
-                async function fetchImageAsFile(imageUrl) {
-                try {
-                const resp = await fetch(imageUrl, { mode: 'cors' });
-                if (!resp.ok) throw new Error('fetch 失败');
-                const blob = await resp.blob();
-                const ext = guessExtFromType(blob.type) || 'png';
-                return new File([blob], 'emoji.' + ext, { type: blob.type || 'image/' + ext });
-                } catch (e) {
-                try {
-                const file = await drawImageToFile(imageUrl);
-                return file;
-                } catch {
-                return null;
-                }
-                }
-                }
+    function fileToBase64(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(String(reader.result || ''));
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+    }
 
-                function guessExtFromType(type) {
-                if (!type) return '';
-                if (type.includes('png')) return 'png';
-                if (type.includes('jpeg') || type.includes('jpg')) return 'jpg';
-                if (type.includes('webp')) return 'webp';
-                if (type.includes('gif')) return 'gif';
-                if (type.includes('bmp')) return 'bmp';
-                return '';
-                }
+    const scan = root => {
+      root.querySelectorAll('img.emoji, img.sticker').forEach(attachVisionToEmoji);
+      if (root.matches && root.matches('img.emoji, img.sticker')) attachVisionToEmoji(root);
+    };
 
-                async function drawImageToFile(src) {
-                return new Promise((resolve, reject) => {
-                const img = new Image();
-                img.crossOrigin = 'anonymous';
-                img.onload = () => {
-                try {
-                const canvas = document.createElement('canvas');
-                canvas.width = img.naturalWidth;
-                canvas.height = img.naturalHeight;
-                const ctx = canvas.getContext('2d');
-                ctx.drawImage(img, 0, 0);
-                canvas.toBlob((blob) => {
-                if (!blob) return reject('toBlob 失败');
-                resolve(new File([blob], 'emoji.png', { type: 'image/png' }));
-                }, 'image/png');
-                } catch (e) {
-                reject(e);
-                }
-                };
-                img.onerror = reject;
-                img.src = src;
-                });
-                }
-
-                async function fileToBase64AndFormat(file) {
-                const ext = (file.name.split('.').pop() || '').toLowerCase();
-                const format = ext === 'jpg' ? 'jpeg' : ext;
-                const ok = ['png', 'jpeg', 'jpg', 'webp', 'gif', 'bmp'].includes(ext);
-                if (!ok) return { base64: null, format: null };
-                const base64 = await fileToBase64(file);
-                const comma = base64.indexOf(',');
-                return { base64: comma >= 0 ? base64.slice(comma + 1) : base64, format };
-                }
-
-                function fileToBase64(file) {
-                return new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.onload = () => resolve(String(reader.result || ''));
-                reader.onerror = reject;
-                reader.readAsDataURL(file);
-                });
-                }
-
-                const scan = root => {
-                root.querySelectorAll('img.emoji, img.sticker').forEach(attachVisionToEmoji);
-                if (root.matches && root.matches('img.emoji, img.sticker')) attachVisionToEmoji(root);
-                };
-
-                scan(document);
-                const mo = new MutationObserver(muts => {
-                for (const m of muts) {
-                for (const n of m.addedNodes) {
-                if (!(n instanceof HTMLElement)) continue;
-                scan(n);
-                }
-                }
-                });
-                mo.observe(chatRoot, { childList: true, subtree: true });
-                })();
-                </script>
+    scan(document);
+    const mo = new MutationObserver(muts => {
+      for (const m of muts) {
+        for (const n of m.addedNodes) {
+          if (!(n instanceof HTMLElement)) continue;
+          scan(n);
+        }
+      }
+    });
+    mo.observe(chatRoot, { childList: true, subtree: true });
+  })();
+</script>
                 <script>
                   // 兼容桥接：提供统一的 VisionPlugin.analyzeUrl，转调媒体扩展插件进行 AI 识图
                   (function () {
